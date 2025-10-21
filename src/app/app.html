@@ -1,1 +1,20 @@
-Soque<router-outlet />
+<header class="topbar">
+	<div class="logo">P</div>
+	<input class="search" placeholder="Buscar" disabled />
+</header>
+
+<div class="layout">
+	<aside class="sidebar">
+		<nav>
+			<a class="item" href="#" (click)="$event.preventDefault()">Inicio</a>
+			<a class="item" href="#" (click)="$event.preventDefault()">Explorar</a>
+			<a class="item" href="#" (click)="$event.preventDefault()">Guardados</a>
+			<a class="item" href="#" (click)="$event.preventDefault()">Mensajes</a>
+		</nav>
+	</aside>
+	<main class="content">
+		<router-outlet />
+	</main>
+	<aside class="rightpad"></aside>
+  
+</div>

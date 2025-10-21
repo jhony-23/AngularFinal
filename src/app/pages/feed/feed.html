@@ -1,0 +1,10 @@
+<section class="feed">
+  <ng-container *ngIf="posts?.length; else empty">
+    <div class="masonry">
+      <app-pin-card *ngFor="let p of posts" [post]="p"></app-pin-card>
+    </div>
+  </ng-container>
+  <ng-template #empty>
+    <p>Cargando posts...</p>
+  </ng-template>
+</section>

@@ -1,0 +1,10 @@
+.feed{ padding: 16px; }
+.masonry{
+  column-count: 5;
+  column-gap: 16px;
+}
+@media (max-width: 1400px){ .masonry{ column-count: 4; } }
+@media (max-width: 1100px){ .masonry{ column-count: 3; } }
+@media (max-width: 800px){ .masonry{ column-count: 2; } }
+@media (max-width: 500px){ .masonry{ column-count: 1; } }
+app-pin-card{ display: inline-block; width: 100%; margin: 0 0 16px; }

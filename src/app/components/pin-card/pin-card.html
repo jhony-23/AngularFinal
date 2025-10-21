@@ -1,0 +1,13 @@
+<p>pin-card works!</p>
+<article class="pin">
+	<img
+		[ngSrc]="'https://picsum.photos/seed/' + (post.id ?? 1) + '/400/600'"
+		width="400"
+		height="600"
+		alt="{{ post.title || 'Post' }}"
+	/>
+	<header>
+		<h3>{{ post.title }}</h3>
+		<p>{{ post.body }}</p>
+	</header>
+</article>
