@@ -4,8 +4,7 @@ import { Component } from '@angular/core';
   selector: 'app-perfil-component',
   standalone: true,
   imports: [],
-  templateUrl: './perfil-component.html',
-  styleUrl: './perfil-component.css'
+  templateUrl: './perfil-component.html'
 })
 export class PerfilComponent {
 

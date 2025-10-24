@@ -1,10 +1,17 @@
 <section class="feed">
+  <div class="toolbar">
+    <a class="btn" routerLink="/new">Nuevo post</a>
+    <button class="btn" (click)="loadPosts()" [disabled]="loading">Recargar</button>
+    <span *ngIf="loading">Cargando…</span>
+  </div>
+
   <ng-container *ngIf="posts?.length; else empty">
-    <div class="masonry">
-      <app-pin-card *ngFor="let p of posts" [post]="p"></app-pin-card>
+    <div class="fila">
+      <app-pin-card *ngFor="let p of posts; trackBy: trackById" [post]="p"></app-pin-card>
     </div>
   </ng-container>
   <ng-template #empty>
-    <p>Cargando posts...</p>
+    <p *ngIf="!loading">No hay posts. Crea uno con “Nuevo post”.</p>
+    <p *ngIf="loading">Cargando posts…</p>
   </ng-template>
 </section>
