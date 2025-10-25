@@ -1,11 +1,10 @@
 import { Component, Input } from '@angular/core';
-import { NgOptimizedImage } from '@angular/common';
 import { Post } from '../../interfaces/post';
 
 @Component({
   selector: 'app-pin-card',
   standalone: true,
-  imports: [NgOptimizedImage],
+  imports: [],
   templateUrl: './pin-card.html',
   styleUrl: './pin-card.css'
 })

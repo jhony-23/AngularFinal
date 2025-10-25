@@ -1,10 +1,9 @@
-<p>pin-card works!</p>
 <article class="pin">
 	<img
-		[ngSrc]="post.imageUrl || ('https://picsum.photos/seed/' + (post.id ?? '1') + '/400/600')"
-		width="400"
-		height="600"
+		[src]="post.imageUrl || ('https://picsum.photos/seed/' + (post.id ?? '1') + '/400/600')"
 		alt="{{ post.title || 'Post' }}"
+		referrerpolicy="no-referrer"
+		crossorigin="anonymous"
 	/>
 	<header>
 		<h3>{{ post.title }}</h3>

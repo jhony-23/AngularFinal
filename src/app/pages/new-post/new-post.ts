@@ -19,19 +19,40 @@ export class NewPostPage {
   form = this.fb.group({
     title: ['', [Validators.required, Validators.minLength(3)]],
     description: ['', [Validators.required, Validators.minLength(5)]],
-    imageUrl: ['', [Validators.required, Validators.pattern(/^https?:\/\//i)]],
   });
 
   loading = false;
-  previewError = false;
+  selectedFile: File | null = null;
+  previewUrl: string | null = null;
 
   get f() { return this.form.controls; }
 
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.previewUrl = e.target?.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
   async submit() {
-    if (this.form.invalid) { this.form.markAllAsTouched(); return; }
+    if (this.form.invalid || !this.selectedFile) { 
+      this.form.markAllAsTouched(); 
+      return; 
+    }
     this.loading = true;
     try {
-      await this.postService.createPost(this.form.value as any);
+      // Convertir imagen a base64 para guardar en Firebase
+      const base64 = await this.fileToBase64(this.selectedFile);
+      const payload = { 
+        ...(this.form.value as any), 
+        imageUrl: base64 
+      };
+      await this.postService.createPost(payload);
       await this.router.navigate(['/']);
     } finally {
       this.loading = false;
@@ -42,31 +63,12 @@ export class NewPostPage {
     await this.router.navigate(['/']);
   }
 
-  // URL lista para previsualizar (limpia espacios y convierte fuentes comunes)
-  get previewUrl(): string | null {
-    const raw = (this.form.value.imageUrl || '').toString().trim();
-    if (!raw) return null;
-    return this.toDirectImageUrl(raw);
-  }
-
-  onImageError() { this.previewError = true; }
-  onImageLoad() { this.previewError = false; }
-
-  private toDirectImageUrl(url: string): string {
-    // Convierte URLs comunes a un enlace directo a la imagen
-    // 1) Google Drive: https://drive.google.com/file/d/<ID>/view => https://drive.google.com/uc?export=view&id=<ID>
-    const g = url.match(/drive\.google\.com\/file\/d\/([^/]+)/i);
-    if (g) return `https://drive.google.com/uc?export=view&id=${g[1]}`;
-
-    // 2) Dropbox: https://www.dropbox.com/s/...?.dl=0 => https://dl.dropboxusercontent.com/s/... (descarga directa)
-    if (/dropbox\.com\//i.test(url)) {
-      return url
-        .replace('www.dropbox.com', 'dl.dropboxusercontent.com')
-        .replace('?dl=0', '')
-        .replace('?dl=1', '');
-    }
-
-    // 3) Quita espacios accidentales
-    return url.trim();
+  private fileToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
   }
 }
